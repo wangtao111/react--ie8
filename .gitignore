@@ -1,0 +1,9 @@
+server.js
+.idea
+.vscode
+.DS_Store
+node_modules
+npm-debug.log
+dist
+1
+.eslintcache

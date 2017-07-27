@@ -1,0 +1,5 @@
+**/dist/**
+**/node_modules/**
+# **/webpack.config*.js
+lint.js
+src/components/case_warning/

@@ -1,0 +1,72 @@
+.case_upload_div {
+  left: 50%;
+  margin-left: -400px;
+  top: 99px;
+  background-color: #fff;
+  z-index: 100;
+  margin-top: 16px;
+  position: absolute;
+  width: 800px;
+  height: 400px;
+  box-sizing: border-box;
+  >.opacity_bg {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    background-color: rgb(99, 103, 105);
+    background-color: rgba(99, 103, 105, 0.5);
+    filter:alpha(opacity=50);
+    // filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#80636769,endColorstr=#80636769);    /*IE8支持*/
+    // z-index: 91;
+  }
+  >.case_upload {
+    position: relative;
+    height: 100%;
+    background-color: #ffffff;
+    .ant-upload-drag{
+      height:357px;
+    }
+      // z-index: 100;
+    .max_min_div{
+      width: 100%;height: 42px;background-color: #444B5F;text-align: right;
+      .max_min{
+        width: 20px;height: 20px;float: right;cursor: pointer;
+        background: url('../assets/home/small.png') no-repeat 0px 10px;margin-top: 11px;
+      }
+      .close {
+        width: 20px;
+        height: 42px;
+        float: right;
+        padding-top: 13px;
+        margin-right: 15px;
+        margin-left: 20px;
+        cursor: pointer;
+      }
+    }
+    .component {
+      width: 100%;
+      height: 100%;
+      margin-top: -42px;
+    }
+  }
+}
+.ant-upload-text{
+  font-size: 16px!important;
+  padding-bottom: 20px;
+  color: #20a0ff;
+}
+.anticon-inbox{
+  display: inline-block!important;
+  width: 300px;
+  height: 140px;
+  border:1px dashed #57c5f7;
+  border-radius: 2px;
+  position: relative;
+  top:-15px;
+  &::before{
+    display: none!important;
+  }
+  background: url("../assets/home/upload.png") 120px 20px no-repeat!important;
+}
