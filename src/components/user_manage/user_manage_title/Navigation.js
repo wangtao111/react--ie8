@@ -12,7 +12,8 @@ class Navigation extends Component {
     this.state = {};
   }
   exit = () => {
-    HashLocation.push('/case_list');
+    HashLocation.push('/');
+    localStorage.clear();
     Object.assign(this.$store.state.userForm, { page: 1, current: 1 });
   };
   render() {

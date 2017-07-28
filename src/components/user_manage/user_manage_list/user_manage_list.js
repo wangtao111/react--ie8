@@ -26,15 +26,15 @@ class UserList extends Component {
     };
   }
   componentDidMount() {
-    this.getProvinces();
     this.refreshList();
+    this.getProvinces();
   }
   onSelectChange(selectedRowKeys) {
     console.log('selectedRowKeys changed: ', selectedRowKeys);
     this.setState({ selectedRowKeys });
   }
   getProvinces = () => {
-    this.$api.decision.province.request().then(({ data }) => {
+    this.$api.user.province.request().then(({ data }) => {
       Object.assign(this.$store.state.provinces, data.data);
     });
   };
@@ -47,7 +47,6 @@ class UserList extends Component {
     this.refreshList();
   };
   refreshList = () => {
-    const arr = [];
     const pagination = this.state.pagination;
     const params = this.$store.state.userForm;
     Object.assign(params, { page_size: 10, ran: Math.random() });
@@ -55,37 +54,13 @@ class UserList extends Component {
     this.setState({
       loading: true
     });
-    this.$api.decision.user.request(params).then(({ data }) => {
-      console.log('分页数据', JSON.stringify(pagination));
-      Object.assign(pagination, { total: data.pager.total });
-      for (let i = 0; i < data.data.length; i += 1) {
-        const levelId = data.data[i].events_grade;
-        const typeId = data.data[i].events_industry_id;
-        let level = '高院';
-        let type = '法院';
-        switch (levelId) {
-        case 1:level = '高院';break;
-        case 2:level = '中院';break;
-        case 3:level = '区县法院';break;
-        default:break;
-        }
-        switch (typeId) {
-        case 1:type = '法院';break;
-        case 7:type = '检察院';break;
-        default:break;
-        }
-        arr.push({
-          key: i,
-          index: i + 1,
-          username: data.data[i].username,
-          realname: data.data[i].real_name,
-          password: '********',
-          level,
-          type,
-          province: data.data[i].province_name,
-          id: data.data[i]._id
-        });
+    this.$api.user.get_user_msg.request(params).then(({ data }) => {
+      console.log('分页数据', data);
+      let arr = data.data;
+      for ( let i = 0; i < arr.length; i++ ){
+        arr[i].index = i + 1;
       }
+      Object.assign(pagination, { total: data.pager.total });
       this.setState({
         loading: false,
         data: arr,

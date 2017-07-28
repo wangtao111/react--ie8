@@ -12,7 +12,9 @@ class Login extends Component {
     this.state = {
       username: '',
       password: '',
-      warningWords: ''
+      warningWords: '',
+      showPasswordWarn: false,
+      showUserWarn: false
     };
   }
   componentWillMount = () => {
@@ -24,31 +26,30 @@ class Login extends Component {
         HashLocation.push('/case_list')
       }
     }
+
   };
   login = () => {
     console.log({username: this.state.username, password: this.state.password});
     localStorage.clear();
     if( !this.state.username ){
-      this.setState({warningWords: '请输入用户名!'});
+      this.setState({showUserWarn: true});
       return;
     }
     if( !this.state.password ){
-      this.setState({warningWords: '请输入密码!'});
+      this.setState({showPasswordWarn: true});
       return;
     }
-    this.$api.decision.login.request({username: this.state.username, password: this.state.password}).then((response) => {
+    this.$api.user.login.request({username: this.state.username, password: this.state.password}).then((response) => {
       console.log('登录信息', response);
-      if(response.data.code ===2 ){
-          this.setState({warningWords: response.data.msg});
-          localStorage.userMsg = '';
+      this.setState({showUserWarn: false, showPasswordWarn: false});
+      if( response.data.code === 2 ){
+        this.setState({showUserWarn: true});
+      }else if( response.data.code === 1 ){
+        this.setState({showPasswordWarn: true});
       }else{
-          this.setState({warningWords: ''});
-          localStorage.userMsg = JSON.stringify(response.data.data);
-          if(response.data.data.username === 'jsgy' || response.data.data.username === 'admin'){
-            HashLocation.push('/count');
-          }else{
-            HashLocation.push('/case_list');
-          }
+        this.setState({showUserWarn: false, showPasswordWarn: false});
+        localStorage.userMsg = JSON.stringify(response.data.data);
+        HashLocation.push('/user_manage');
       }
     });
   };
@@ -56,16 +57,22 @@ class Login extends Component {
     e.keyCode === 13 && this.login();
   };
   render = () => {
-    const {username, password, warningWords } = this.state;
+    const {username, password, warningWords, showUserWarn, showPasswordWarn } = this.state;
     return (
       <div id="login">
         <div className="content">
           <p>
             用户登录系统 <br />
             {/*<b>YONG HU DENG LU</b>*/}
+            {
+              showUserWarn ? <img src={require('../../assets/login/user_wrong.png')} className="user_wrong" alt=""/>:null
+            }
+            {
+              showPasswordWarn ? <img src={require('../../assets/login/password_wrong.png')} className="password_wrong" alt=""/> :null
+            }
           </p><br/>
           <div className="input_content">
-            <i></i>
+            <i />
             <p>
               <Input style={window.ActiveXObject !== undefined ? {paddingTop: '15px'} : {}}
                      id="user"
@@ -82,7 +89,7 @@ class Login extends Component {
             </p>
           </div>
           <div className="input_content">
-            <b></b>
+            <b />
             <p>
               <Input style={window.ActiveXObject !== undefined ? {paddingTop: '15px'} : {}}
                      id="password"
@@ -103,7 +110,6 @@ class Login extends Component {
           {
             warningWords ?<div className="warning">{warningWords}</div>:null
           }
-
           <div className="login_btn" onClick={this.login.bind(this)}><span>登录</span></div>
         </div>
       </div>)

@@ -20,11 +20,9 @@ class List extends Component {
         info: ''
       },
       modalInfo: {
-        username: '',
-        realname: '',
+        user_name: '',
         password: '',
         province: '',
-        level: '',
         type: ''
       },
       form: {}
@@ -32,30 +30,24 @@ class List extends Component {
   }
   modifyUserInfo = (index) => {
     const data = this.props.data;
-    let username = '';
-    let realname = '';
+    let user_name = '';
     let password = '';
     let province = '';
-    let level = '';
     let type = '';
     for (let i = 0; i < data.length; i += 1) {
       if (index === data[i].index) {
-        username = data[i].username;
-        realname = data[i].realname;
+        user_name = data[i].user_name;
         password = '********';
         province = data[i].province;
-        level = data[i].level;
         type = data[i].type;
       }
     }
     this.setState({
       showLModal: true,
       modalInfo: {
-        username,
-        realname,
+        user_name,
         password,
         province,
-        level,
         type
       }
     });
@@ -153,34 +145,6 @@ class List extends Component {
       modalInfo
     });
   };
-  handleLevelChange = (value) => {
-    let id = 1;
-    if (value === '高院') {
-      id = 1;
-    } else if (value === '中院') {
-      id = 2;
-    } else if (value === '区县法院') {
-      id = 3;
-    }
-    const modalInfo = Object.assign(this.state.modalInfo, { level: value });
-    this.setState({
-      form: Object.assign(this.state.form, { events_grade: id }),
-      modalInfo
-    });
-  };
-  handleTypeChange = (value) => {
-    let id = 1;
-    if (value === '法院') {
-      id = 1;
-    } else if (value === '检察院') {
-      id = 7;
-    }
-    const modalInfo = Object.assign(this.state.modalInfo, { type: value });
-    this.setState({
-      form: Object.assign(this.state.form, { events_industry_id: id }),
-      modalInfo
-    });
-  };
   render() {
     const provinces = [];
     this.$store.state.provinces.map(province => (
@@ -196,29 +160,21 @@ class List extends Component {
       dataIndex: 'index',
       key: 'index'
     }, {
-      title: '省份',
+      title: '用户名',
       className: 'column-middle',
-      dataIndex: 'province'
-    }, {
-      title: '机构等级',
-      className: 'column-middle',
-      dataIndex: 'level'
-    }, {
-      title: '机构类型',
-      className: 'column-middle',
-      dataIndex: 'type'
-    }, {
-      title: '用户名称',
-      className: 'column-middle',
-      dataIndex: 'username'
-    }, {
-      title: '真实姓名',
-      className: 'column-middle',
-      dataIndex: 'realname'
+      dataIndex: 'user_name'
     }, {
       title: '密码',
       className: 'column-middle',
       dataIndex: 'password'
+    }, {
+      title: '职业',
+      className: 'column-middle',
+      dataIndex: 'type'
+    },{
+      title: '省份',
+      className: 'column-middle',
+      dataIndex: 'province'
     }, {
       title: '操作',
       className: 'column-operation',
@@ -246,25 +202,7 @@ class List extends Component {
           <div className="adduser_header">编辑用户信息</div>
           <div className="adduser">
             <span>用户名称：</span>
-            <input className="modify_username_input" type="text" value={this.state.modalInfo.username} readOnly="readonly" />
-          </div>
-          <div className="adduser">
-            <span>真实姓名：</span>
-            <input
-              type="text"
-              value={this.state.modalInfo.realname}
-              onChange={(e) => {
-                e.stopPropagation();
-                this.setState({
-                  warning: {
-                    show: false,
-                    info: ''
-                  },
-                  modalInfo: Object.assign(this.state.modalInfo, { realname: e.target.value }),
-                  form: Object.assign(this.state.form, { real_name: e.target.value })
-                });
-              }}
-            />
+            <input className="modify_username_input" type="text" value={this.state.modalInfo.user_name} readOnly="readonly" />
           </div>
           <div className="adduser">
             <span>密码：</span>

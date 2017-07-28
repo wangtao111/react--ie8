@@ -57,10 +57,6 @@ const requestApi = function (obj, params, otherParams) {
   }
   const p = axios.request(obj);
   return Promise.resolve(p).then(v => new Promise((resolve, reject) => {
-    if (v.data.code !== 2 && v.data.code) {
-      console.error("状态有误",v.data,obj.url)
-      return;
-    }
     if (api.defaultErrorHandler) {
       const handleResult = api.defaultErrorHandler(v.data);
       if (!handleResult) {

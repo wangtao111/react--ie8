@@ -29,9 +29,6 @@ class Title extends Component {
         type: ''
       },
       form: {
-        province_id: '',
-        events_grade: '',
-        events_industry_id: ''
       }
     };
   }
@@ -69,11 +66,10 @@ class Title extends Component {
     });
   }
   handleOk() {
-    if (this.state.modalInfo.username === ''
-      || this.state.modalInfo.realname === ''
+    console.log(this.state.form);
+    if (this.state.modalInfo.user_name === ''
       || this.state.modalInfo.password === ''
       || this.state.modalInfo.province === ''
-      || this.state.modalInfo.level === ''
       || this.state.modalInfo.type === ''
     ) {
       this.setState({
@@ -84,7 +80,8 @@ class Title extends Component {
       });
     } else {
       const params = this.state.form;
-      this.$api.decision.addUser.request(params).then(({ data }) => {
+      this.$api.user.add_user.request(params).then(({data}) => {
+        console.log(data);
         switch (data.code) {
         case 0: {
           success({
@@ -97,11 +94,9 @@ class Title extends Component {
                 },
                 showTModal: false,
                 modalInfo: {
-                  username: '',
-                  realname: '',
+                  user_name: '',
                   password: '',
                   province: '',
-                  level: '',
                   type: ''
                 }
               });
@@ -145,21 +140,9 @@ class Title extends Component {
     }
   }
   handleProvinceChange = (value) => {
-    let id = 0;
-    this.$store.state.provinces.forEach((province) => {
-      if (province.name === value) {
-        id = province.id;
-      }
-    });
     this.setState({
-      form: Object.assign(this.state.form, { province_id: id }),
+      form: Object.assign(this.state.form, { province: value }),
       modalInfo: Object.assign(this.state.modalInfo, { province: value })
-    });
-  };
-  handleLevelChange = (value) => {
-    this.setState({
-      form: Object.assign(this.state.form, { events_grade: value }),
-      modalInfo: Object.assign(this.state.modalInfo, { level: value })
     });
   };
   handleTypeChange = (value) => {
@@ -185,34 +168,16 @@ class Title extends Component {
             <span>用户名称：</span>
             <input
               type="text"
-              value={this.state.modalInfo.username}
+              value={this.state.modalInfo.user_name}
               onChange={(e) => {
                 e.stopPropagation();
-                this.state.modalInfo.username = e.target.value;
+                this.state.modalInfo.user_name = e.target.value;
                 this.setState({
                   warning: {
                     show: false,
                     info: ''
                   },
-                  form: Object.assign(this.state.form, { username: e.target.value })
-                });
-              }}
-            />
-          </div>
-          <div className="adduser">
-            <span>真实姓名：</span>
-            <input
-              type="text"
-              value={this.state.modalInfo.realname}
-              onChange={(e) => {
-                e.stopPropagation();
-                this.state.modalInfo.realname = e.target.value;
-                this.setState({
-                  warning: {
-                    show: false,
-                    info: ''
-                  },
-                  form: Object.assign(this.state.form, { real_name: e.target.value })
+                  form: Object.assign(this.state.form, { user_name: e.target.value })
                 });
               }}
             />
@@ -230,7 +195,7 @@ class Title extends Component {
                     show: false,
                     info: ''
                   },
-                  form: Object.assign(this.state.form, { password: e.target.value, re_password: e.target.value })
+                  form: Object.assign(this.state.form, { password: e.target.value})
                 });
               }}
             />
@@ -241,20 +206,23 @@ class Title extends Component {
               {provinces}
             </Select>
           </div>
-          <div className="adduser_select">
-            <span>机构等级：</span>
-            <Select placeholder="机构等级" value={this.state.modalInfo.level} style={{ width: 270, marginTop: -1 }} onChange={this.handleLevelChange}>
-              <Option value="1">高院</Option>
-              <Option value="2">中院</Option>
-              <Option value="3">区县法院</Option>
-            </Select>
-          </div>
-          <div className="adduser_select">
-            <span>机构类型：</span>
-            <Select placeholder="机构类型" value={this.state.modalInfo.type} style={{ width: 270, marginTop: -1 }} onChange={this.handleTypeChange}>
-              <Option value="1">法院</Option>
-              <Option value="7">检察院</Option>
-            </Select>
+          <div className="adduser">
+            <span>职业：</span>
+            <input
+              type="text"
+              value={this.state.modalInfo.type}
+              onChange={(e) => {
+              e.stopPropagation();
+              this.state.modalInfo.type = e.target.value;
+              this.setState({
+                warning: {
+                  show: false,
+                  info: ''
+                },
+                form: Object.assign(this.state.form, { type: e.target.value })
+              });
+            }}
+            />
           </div>
           <div className="adduser_warning"><span>{this.state.warning.info}</span></div>
           <div className="adduser_footer">

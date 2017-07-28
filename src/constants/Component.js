@@ -13,14 +13,7 @@ class ReactComponent extends Component {
     this.$store.components.push(this);
   }
   componentWillMount = () => {
-    if (localStorage.userMsg) {
-      const userMsg = JSON.parse(localStorage.userMsg);
-      if (userMsg.username !== 'jsgy' && userMsg.username !== 'xmzy') {
-        document.title = '量刑建议智能决策辅助系统';
-      } else {
-        document.title = '同案不同判预警系统';
-      }
-    }
+
   }
 }
 export default ReactComponent;
