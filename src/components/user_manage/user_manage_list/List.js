@@ -34,14 +34,10 @@ class List extends Component {
     let password = '';
     let province = '';
     let type = '';
-    for (let i = 0; i < data.length; i += 1) {
-      if (index === data[i].index) {
-        user_name = data[i].user_name;
-        password = '********';
-        province = data[i].province;
-        type = data[i].type;
-      }
-    }
+    user_name = data[index].user_name;
+    password = data[index].password;
+    province = data[index].province;
+    type = data[index].type;
     this.setState({
       showLModal: true,
       modalInfo: {
@@ -51,6 +47,7 @@ class List extends Component {
         type
       }
     });
+    console.log(44444,this.state.modalInfo);
   };
   handleCancel() {
     this.setState({
@@ -63,7 +60,7 @@ class List extends Component {
     });
   }
   handleOk() {
-    if (this.state.modalInfo.realname === '' || this.state.modalInfo.password === '') {
+    if (this.state.modalInfo.password === '' || this.state.modalInfo.province === '' || this.state.modalInfo.type === '') {
       this.setState({
         warning: {
           show: true,
@@ -71,9 +68,8 @@ class List extends Component {
         }
       });
     } else {
-      Object.assign(this.state.form, { username: this.state.modalInfo.username });
-      const params = this.state.form;
-      this.$api.decision.modifyUser.request(params).then(({ data }) => {
+      const params = this.state.modalInfo;
+      this.$api.user.update_user.request(params).then(({ data }) => {
         switch (data.code) {
         case 0: {
           success({
@@ -86,8 +82,7 @@ class List extends Component {
                 },
                 showLModal: false,
                 modalInfo: {
-                  username: '',
-                  realname: '',
+                  user_name: '',
                   password: ''
                 }
               });
@@ -141,7 +136,6 @@ class List extends Component {
     }
     const modalInfo = Object.assign(this.state.modalInfo, { province: value });
     this.setState({
-      form: Object.assign(this.state.form, { province_id: id }),
       modalInfo
     });
   };
@@ -182,7 +176,7 @@ class List extends Component {
       render(text, record) {
         return (
           <div className="operation">
-            <input className="operation_btn modify" type="button" onClick={list.modifyUserInfo.bind(list, record.index)} />
+            <input className="operation_btn modify" type="button" onClick={list.modifyUserInfo.bind(list, record.index-1)} />
             <input className="operation_btn delete" type="button" src={require('../../../assets/user_manage/delete.png')} onClick={deleteUserInfo.bind(list, record.index)} />
           </div>
         );
@@ -207,19 +201,8 @@ class List extends Component {
           <div className="adduser">
             <span>密码：</span>
             <input
-              type="text"
+              type="password"
               value={this.state.modalInfo.password}
-              onFocus={(e) => {
-                if (e.target.value === '********') {
-                  this.setState({
-                    warning: {
-                      show: false,
-                      info: ''
-                    },
-                    modalInfo: Object.assign(this.state.modalInfo, { password: '' })
-                  });
-                }
-              }}
               onChange={(e) => {
                 e.stopPropagation();
                 this.setState({
@@ -228,7 +211,6 @@ class List extends Component {
                     info: ''
                   },
                   modalInfo: Object.assign(this.state.modalInfo, { password: e.target.value }),
-                  form: Object.assign(this.state.form, { password: e.target.value })
                 });
               }}
             />
@@ -244,28 +226,22 @@ class List extends Component {
               {provinces}
             </Select>
           </div>
-          <div className="adduser_select">
-            <span>机构等级：</span>
-            <Select
-              value={this.state.modalInfo.level}
-              style={{ width: 270, marginTop: -1 }}
-              onChange={this.handleLevelChange}
-            >
-              <Option value="高院">高院</Option>
-              <Option value="中院">中院</Option>
-              <Option value="区县法院">区县法院</Option>
-            </Select>
-          </div>
-          <div className="adduser_select">
-            <span>机构类型：</span>
-            <Select
+          <div className="adduser">
+            <span>职业：</span>
+            <input
+              type="text"
               value={this.state.modalInfo.type}
-              style={{ width: 270, marginTop: -1 }}
-              onChange={this.handleTypeChange}
-            >
-              <Option value="法院">法院</Option>
-              <Option value="检察院">检察院</Option>
-            </Select>
+              onChange={(e) => {
+                e.stopPropagation();
+                this.setState({
+                  warning: {
+                    show: false,
+                    info: ''
+                  },
+                  modalInfo: Object.assign(this.state.modalInfo, { type: e.target.value }),
+                });
+              }}
+            />
           </div>
           <div className="adduser_warning"><span>{this.state.warning.info}</span></div>
           <div className="adduser_footer">

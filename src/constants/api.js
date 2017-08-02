@@ -15,6 +15,14 @@ const apiObject = {
     },
     add_user: {
       url: `${url}/add_user`
+    },
+    delete: {
+      url: `${url}/delete_user`,
+      method: 'delete'
+    },
+    update_user: {
+      url: `${url}/update_user`,
+      method: 'put'
     }
   }
 };

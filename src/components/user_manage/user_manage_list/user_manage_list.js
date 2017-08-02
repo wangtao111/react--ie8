@@ -73,7 +73,7 @@ class UserList extends Component {
     const data = this.state.data;
     for (let i = 0; i < data.length; i += 1) {
       if (index === data[i].index) {
-        arr.push(data[i].key);
+        arr.push(data[i].index-1);
       }
     }
     this.setState({
@@ -85,7 +85,7 @@ class UserList extends Component {
     const arr = [];
     const data = this.state.data;
     for (let i = 0; i < data.length; i += 1) {
-      arr.push(data[i].key);
+      arr.push(data[i].index-1);
     }
     this.setState({
       selectedRowKeys: arr
@@ -95,8 +95,8 @@ class UserList extends Component {
     const arr = [];
     const data = this.state.data;
     for (let i = 0; i < data.length; i += 1) {
-      if (this.state.selectedRowKeys.indexOf(data[i].key) === -1) {
-        arr.push(data[i].key);
+      if (this.state.selectedRowKeys.indexOf(data[i].index-1) === -1) {
+        arr.push(data[i].index);
       }
     }
     this.setState({
@@ -112,11 +112,12 @@ class UserList extends Component {
         const arr = [];
         const data = this.state.data;
         for (let i = 0; i < data.length; i += 1) {
-          if (this.state.selectedRowKeys.indexOf(data[i].key) !== -1) {
-            arr.push(data[i].id);
+          if(this.state.selectedRowKeys.indexOf(i) !==-1){
+            arr.push(data[i].user_name);
           }
         }
-        this.$api.decision.deleteUser.request({ ids: JSON.stringify(arr) }).then((res) => {
+        this.$api.user.delete.request({ ids: JSON.stringify(arr) }).then((res) => {
+          console.log(res);
           if (res.data.code) {
             message.error('删除失败！');
             this.setState({
