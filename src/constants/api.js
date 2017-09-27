@@ -1,6 +1,6 @@
 
 import { define } from './api_helper';
-const url = "http://192.168.11.154:8081";
+const url = "http://192.168.20.60:8081";
 const apiObject = {
   user:{
     login:{

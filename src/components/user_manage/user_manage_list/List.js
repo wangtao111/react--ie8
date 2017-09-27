@@ -70,7 +70,7 @@ class List extends Component {
     } else {
       const params = this.state.modalInfo;
       this.$api.user.update_user.request(params).then(({ data }) => {
-        switch (data.code) {
+        switch ( data.code ) {
         case 0: {
           success({
             title: '修改成功',
@@ -265,7 +265,7 @@ class List extends Component {
         </div>
       </div>
     );
-  }
+  };;
 }
 List.propTypes = {
   pagination: React.PropTypes.object.isRequired,

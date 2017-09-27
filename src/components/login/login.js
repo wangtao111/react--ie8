@@ -18,7 +18,7 @@ class Login extends Component {
     };
   }
   componentWillMount = () => {
-    if (localStorage.userMsg) {
+    if (localStorage.userMsg && localStorage.userMsg !== 'undefined') {
       const userMsg = JSON.parse(localStorage.userMsg);
       if (userMsg.username === 'jsgy' || userMsg.username === 'admin') {
         HashLocation.push('/count')
@@ -26,7 +26,6 @@ class Login extends Component {
         HashLocation.push('/case_list')
       }
     }
-
   };
   login = () => {
     console.log({username: this.state.username, password: this.state.password});

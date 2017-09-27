@@ -24,15 +24,10 @@ class Navigation extends Component {
             alt=""
             src={require('../../../assets/home/logo.png')}
           />
-          {
-            this.$store.state.form.username === 'jsgy' ? <div className="um_title">
-              同案不同判预警系统
-              <br /><b>TONG AN BU TONG PAN YU JING XI TONG</b>
-            </div> : <div className="um_title">
-              量刑建议智能决策辅助系统
-              <br /><b>LIANG XING JIAN YI ZHI NENG JUE CE XI TONG</b>
-            </div>
-          }
+         <div className="um_title">
+              用户中心
+              <br /><b>YONG HU ZHONG XIN</b>
+          </div>
           <div className="um_user">
             <img alt="" src={require('../../../assets/count/out.png')} style={{ top: '5px' }} />
             <a onClick={this.exit.bind(this)}>退出管理</a>
